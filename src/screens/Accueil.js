@@ -50,7 +50,7 @@ const Accueil = () => {
 
   // Fonction pour ouvrir le compte Instagram
   const openInstagram = () => {
-    Linking.openURL('https://www.instagram.com/projet_arrosage_snirrrrrrrrrrrrrrrrrrrrr/');
+    Linking.openURL('https://www.instagram.com/projet_arrosage_snir/');
   };
 
   // Si l'utilisateur est connecté, afficher le contenu principal
@@ -76,7 +76,7 @@ const Accueil = () => {
 
         {/* Bouton Instagram */}
         <TouchableOpacity onPress={openInstagram} style={styles.instagramButton}>
-          <Icon name="instagram" size={30} color="black" />
+          <Icon name="instagram" size={30} color="white" />
         </TouchableOpacity>
       </ImageBackground>
 
