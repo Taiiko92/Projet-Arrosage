@@ -1,0 +1,12 @@
+{
+    "extends": "rallycoding",
+    "rules": {
+      "max-len": ["error", { "code": 300 }],
+      "global-require": "off",
+      "no-undef": "off",
+      "no-unused-vars": "off",
+      "no-nested-ternary": "off",
+      "react/self-closing-comp": "off"
+    }
+  }
+  
