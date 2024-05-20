@@ -50,7 +50,7 @@ const Accueil = () => {
 
   // Fonction pour ouvrir le compte Instagram
   const openInstagram = () => {
-    Linking.openURL('https://www.instagram.com/projet_arrosage_snirrrrr/');
+    Linking.openURL('https://www.instagram.com/projet_arrosage_snir/');
   };
 
   // Si l'utilisateur est connecté, afficher le contenu principal
