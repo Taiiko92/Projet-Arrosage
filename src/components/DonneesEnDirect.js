@@ -182,7 +182,7 @@ const PrevisionsMeteo = () => {
               </View>
               <View style={styles.quantitePluieContainer}>
                 <Icon name="ruler" size={20} color="#000" />
-                <Text style={styles.quantitePluie}> {prevision.rain ? prevision.rain['1h'] : 0} mm</Text>
+                <Text style={styles.quantitePluie}> {prevision.rain ? prevision.rain['3h'] : 0} mm</Text>
               </View>
             </View>
           </View>
