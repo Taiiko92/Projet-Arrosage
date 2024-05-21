@@ -199,7 +199,7 @@ const ArrosageAutomatique = ({ automatiqueActive }) => {
 
   useEffect(() => {
     setLoading(true);
-    fetch('http://192.168.5.34:3000/donnees')
+    fetch('http://192.168.5.34:3000/donnees/humidite')
       .then(response => response.json())
       .then(() => {
         setLoading(false);
