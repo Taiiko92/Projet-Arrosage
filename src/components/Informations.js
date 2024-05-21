@@ -20,7 +20,7 @@ const Informations = () => {
     }, [titleAnim])
   );
 
-  const InfoPlantes = [
+  const plantCareData = [
     {
       id: '1',
       title: 'Choix d\'emplacement ensoleillé',
@@ -127,7 +127,7 @@ const Informations = () => {
         </Animated.Text>
       </View>
       <FlatList
-        data={InfoPlantes}
+        data={plantCareData}
         keyExtractor={(item) => item.id}
         renderItem={renderTipItem}
       />
