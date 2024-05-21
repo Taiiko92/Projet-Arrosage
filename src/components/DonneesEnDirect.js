@@ -125,7 +125,7 @@ const PrevisionsMeteo = () => {
   useEffect(() => {
     const init = async () => {
       try {
-        const responseHumidite = await fetch('http://192.168.5.34:3000/donnees');
+        const responseHumidite = await fetch('http://192.168.5.34:3000/donnees/humidite');
         const dataHumidite = await responseHumidite.json();
         if (dataHumidite.length > 0) {
           const humidite = dataHumidite[0].Taux;
@@ -136,7 +136,7 @@ const PrevisionsMeteo = () => {
       }
 
       try {
-        const responseCuve = await fetch('http://192.168.5.34:3000/cuve');
+        const responseCuve = await fetch('http://192.168.5.34:3000/donnees/niveauEau');
         const dataCuve = await responseCuve.json();
         if (dataCuve.length > 0) {
           const niveauEau = dataCuve[0].Distance;

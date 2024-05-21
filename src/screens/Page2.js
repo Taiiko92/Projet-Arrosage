@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
     resizeMode: 'cover',
-    width: '100%',
+    width: '1000%',
     height: '100%',
   },
   openModalButton: {
