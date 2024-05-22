@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, ScrollView, StyleSheet, Animated } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import { ProgressBar } from 'react-native-paper'; 
 import io from 'socket.io-client';
@@ -11,9 +11,10 @@ const SOCKET_URL = 'http://192.168.5.34:3000';
 
 const PrevisionsMeteo = () => {
   const [donneesMeteo, setDonneesMeteo] = useState(null);
-  const [derniereValeurHum, setDerniereValeurHum] = useState(null);
-  const [derniereValeurCuve, setDerniereValeurCuve] = useState(null);
+  const [derniereValeurHum, setDerniereValeurHum] = useState(2);
+  const [derniereValeurCuve, setDerniereValeurCuve] = useState(20);
   const [socket, setSocket] = useState(null);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     const newSocket = io(SOCKET_URL);
@@ -47,6 +48,14 @@ const PrevisionsMeteo = () => {
 
     fetchDataMeteo();
   }, []);
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 1500,
+      useNativeDriver: true,
+    }).start();
+  }, [fadeAnim]);
 
   const convertirEnCelsius = (tempKelvin) => Math.round(tempKelvin - 273.15).toString();
 
@@ -192,7 +201,7 @@ const PrevisionsMeteo = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
       <View style={styles.titreContainer}>
         <Text style={styles.titre}>Données en temps réel</Text>
       </View>
@@ -217,7 +226,7 @@ const PrevisionsMeteo = () => {
         )}
       </View>
       {afficherPrevisions()}
-    </View>
+    </Animated.View>
   );
 };
 

@@ -1,9 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, Animated, Easing } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import { Easing as ReanimatedEasing } from 'react-native-reanimated';
 
 const Informations = () => {
   const titleAnim = useRef(new Animated.Value(0)).current;
+  const pageAnim = useRef(new Animated.Value(0)).current;
 
   useFocusEffect(
     React.useCallback(() => {
@@ -14,10 +16,18 @@ const Informations = () => {
         easing: Easing.elastic(1),
       }).start();
 
+      Animated.timing(pageAnim, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+        easing: ReanimatedEasing.out(ReanimatedEasing.ease),
+      }).start();
+
       return () => {
         titleAnim.setValue(0);
+        pageAnim.setValue(0);
       };
-    }, [titleAnim])
+    }, [titleAnim, pageAnim])
   );
 
   const plantCareData = [
@@ -106,7 +116,22 @@ const Informations = () => {
   );
 
   return (
-    <View style={styles.container}>
+    <Animated.View
+      style={[
+        styles.container,
+        {
+          opacity: pageAnim,
+          transform: [
+            {
+              translateY: pageAnim.interpolate({
+                inputRange: [0, 1],
+                outputRange: [50, 0],
+              }),
+            },
+          ],
+        },
+      ]}
+    >
       <View style={styles.titleContainer}>
         <Animated.Text
           style={[
@@ -131,7 +156,7 @@ const Informations = () => {
         keyExtractor={(item) => item.id}
         renderItem={renderTipItem}
       />
-    </View>
+    </Animated.View>
   );
 };
 
