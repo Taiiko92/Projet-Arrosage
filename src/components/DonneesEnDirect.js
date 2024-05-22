@@ -11,8 +11,8 @@ const SOCKET_URL = 'http://192.168.5.34:3000';
 
 const PrevisionsMeteo = () => {
   const [donneesMeteo, setDonneesMeteo] = useState(null);
-  const [derniereValeurHum, setDerniereValeurHum] = useState(2);
-  const [derniereValeurCuve, setDerniereValeurCuve] = useState(20);
+  const [derniereValeurHum, setDerniereValeurHum] = useState(null);
+  const [derniereValeurCuve, setDerniereValeurCuve] = useState(null);
   const [socket, setSocket] = useState(null);
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
