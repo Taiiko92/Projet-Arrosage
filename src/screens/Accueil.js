@@ -11,18 +11,10 @@ const Accueil = () => {
   // État pour gérer la visibilité du modal et l'état de connexion
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isTitleVisible, setIsTitleVisible] = useState(false);
 
   const slideAnim = useRef(new Animated.Value(-1000)).current;
-  const titleOpacity = useRef(new Animated.Value(0)).current;
-
   useEffect(() => {
     checkLoginStatus();
-    Animated.timing(titleOpacity, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start(() => setIsTitleVisible(true));
   }, []);
 
   // Vérifier l'état de connexion en utilisant AsyncStorage
@@ -84,15 +76,13 @@ const Accueil = () => {
           <Icon name="envelope" size={30} color="white" />
         </TouchableOpacity>
 
-        {/* Affichage du titre avec animation d'opacité */}
-        {isTitleVisible && (
-          <Animated.View style={[styles.titleContainer, { opacity: titleOpacity }]}>
-            <View style={styles.titleBackground}>
-              <Text style={styles.projectText}>Projet d'arrosage intelligent</Text>
-              <Text style={styles.emoji}>🌱💧</Text>
-            </View>
-          </Animated.View>
-        )}
+        {/* Bloc contenant le titre */}
+        <View style={styles.titleContainer}>
+          <View style={styles.titleBackground}>
+            <Text style={styles.projectText}>Projet d'arrosage intelligent</Text>
+            <Text style={styles.emoji}>🌱💧</Text>
+          </View>
+        </View>
 
         {/* Bouton Instagram */}
         <TouchableOpacity onPress={openInstagram} style={styles.instagramButton}>
@@ -102,35 +92,36 @@ const Accueil = () => {
 
       {/* Modal pour la navigation */}
       <Modal transparent animationType="none" visible={modalVisible} onRequestClose={closeModal}>
-        <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={closeModal}>
-          <Animated.View
-            style={[
-              styles.modalContainer,
-              {
-                transform: [
-                  {
-                    translateX: slideAnim,
-                  },
-                ],
-              },
-            ]}
-          >
-            <View style={styles.modalContent}>
-              {/* Options de navigation dans le modal */}
-              <TouchableOpacity onPress={() => navigateTo('Page2')} style={styles.modalLink}>
-                <Text style={styles.linkText}>Informations et conseils</Text>
-              </TouchableOpacity>
+          <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={closeModal}>
+            <Animated.View
+              style={[
+                styles.modalContainer,
+                {
+                  transform: [
+                    {
+                      translateX: slideAnim,
+                    },
+                  ],
+                },
+              ]}
+            >
+          <View style={styles.modalContent}>
+            {/* Options de navigation dans le modal */}
+            <TouchableOpacity onPress={() => navigateTo('Page2')} style={styles.modalLink}>
+              <Text style={styles.linkText}>Informations et conseils</Text>
+            </TouchableOpacity>
 
-              <TouchableOpacity onPress={() => navigateTo('Page3')} style={styles.modalLink}>
-                <Text style={styles.linkText}>Données en temps réel</Text>
-              </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigateTo('Page3')} style={styles.modalLink}>
+              <Text style={styles.linkText}>Données en temps réel</Text>
+            </TouchableOpacity>
 
-              <TouchableOpacity onPress={() => navigateTo('Page4')} style={styles.modalLink}>
-                <Text style={styles.linkText}>Gestion de l'arrosage</Text>
-              </TouchableOpacity>
-            </View>
-          </Animated.View>
+            <TouchableOpacity onPress={() => navigateTo('Page4')} style={styles.modalLink}>
+              <Text style={styles.linkText}>Gestion de l'arrosage</Text>
+            </TouchableOpacity>
+          </View>
+        </Animated.View>
         </TouchableOpacity>
+
       </Modal>
 
       {/* Texte en bas de la page */}
@@ -218,17 +209,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   footerText: {
-    position: 'absolute',
-    bottom: 10,
-    right: 15,
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-    fontStyle: 'italic',
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: { width: 2, height: 2 },
-    textShadowRadius: 5,
-  },
+  position: 'absolute',
+  bottom: 10,
+  right: 15,
+  color: 'white',
+  fontSize: 16,
+  fontWeight: 'bold',
+  fontStyle: 'italic',
+  textShadowColor: 'rgba(0, 0, 0, 0.75)',
+  textShadowOffset: { width: 2, height: 2 },
+  textShadowRadius: 5,
+},
 });
 
 export default Accueil;

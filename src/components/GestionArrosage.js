@@ -1,7 +1,89 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Alert, ActivityIndicator, Animated } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import io from 'socket.io-client';
+
+const GestionArrosage = () => {
+  const [automatiqueActive, setAutomatiqueActive] = useState(false);
+  const [manuelActive, setManuelActive] = useState(false);
+  const [fadeInAnim] = useState(new Animated.Value(0)); // Animation d'opacité
+
+  useEffect(() => {
+    // Animation d'entrée
+    Animated.timing(fadeInAnim, {
+      toValue: 1,
+      duration: 1000, // Durée de l'animation en millisecondes
+      useNativeDriver: true, // Utilisation du pilote natif pour l'animation
+    }).start();
+  }, []);
+
+  const toggleAutomaticMode = (newValue) => {
+    setAutomatiqueActive(newValue);
+    setManuelActive(!newValue);
+  };
+
+  return (
+    <Animated.View style={[styles.container, { opacity: fadeInAnim }]}>
+      <ArrosageAutomatique automatiqueActive={automatiqueActive} />
+      <SeparatorLine />
+      <ArrosageManuel toggleAutomaticMode={toggleAutomaticMode} />
+    </Animated.View>
+  );
+};
+
+const ArrosageAutomatique = ({ automatiqueActive }) => {
+  const [loading, setLoading] = useState(false);
+  const [apiErrorAlertShown, setApiErrorAlertShown] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    fetch('http://192.168.5.34:3000/donnees/humidite')
+      .then(response => response.json())
+      .then(() => {
+        setLoading(false);
+      })
+      .catch(() => {
+        setApiErrorAlertShown(true);
+        setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    const socket = io('http://192.168.5.34:3000');
+
+    socket.on('automatiqueActive', (data) => {
+      // Gérer le statut automatique actif/inactif ici
+    });
+
+    return () => socket.disconnect();
+  }, []);
+
+  return (
+    <View style={styles.arrosageContainer}>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>Gestion automatique de l'arrosage</Text>
+      </View>
+
+      <View style={[styles.statusMessageContainer, { backgroundColor: automatiqueActive ? 'rgb(255, 0, 0)' : 'rgb(0, 128, 0)', marginTop: 20 }]}>
+        <Text style={styles.statusMessageText}>
+          {automatiqueActive ? 'Le mode automatique est désactivé' : 'Le mode automatique est activé'}
+        </Text>
+      </View>
+
+      {loading ? (
+        <ActivityIndicator size="large" color="rgb(255, 0, 0)" style={{ marginTop: 20 }} />
+      ) : (
+        <View />
+      )}
+
+      {apiErrorAlertShown && (
+        <View style={[styles.alertContainer, { bottom: 40 }]}>
+          <Text style={styles.alertText}>Connexion à l'API en attente...</Text>
+        </View>
+      )}
+    </View>
+  );
+};
 
 const ArrosageManuel = ({ toggleAutomaticMode }) => {
   const [arrosageActive, setArrosageActive] = useState(false);
@@ -12,6 +94,16 @@ const ArrosageManuel = ({ toggleAutomaticMode }) => {
   const [timerRunning, setTimerRunning] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
   const [disableButton, setDisableButton] = useState(false); // État pour désactiver le bouton
+  const [fadeInAnim] = useState(new Animated.Value(0)); // Animation d'opacité
+
+  useEffect(() => {
+    // Animation d'entrée
+    Animated.timing(fadeInAnim, {
+      toValue: 1,
+      duration: 1000, // Durée de l'animation en millisecondes
+      useNativeDriver: true, // Utilisation du pilote natif pour l'animation
+    }).start();
+  }, []);
 
   useEffect(() => {
     const socket = io('http://192.168.5.34:3000');
@@ -140,9 +232,8 @@ const ArrosageManuel = ({ toggleAutomaticMode }) => {
     }
   };
 
-
   return (
-    <View style={styles.arrosageContainer}>
+    <Animated.View style={[styles.arrosageContainer, { opacity: fadeInAnim }]}>
       <TouchableOpacity
         style={[
           styles.button,
@@ -189,85 +280,13 @@ const ArrosageManuel = ({ toggleAutomaticMode }) => {
           </View>
         )}
       </View>
-    </View>
-  );
-};
-
-const ArrosageAutomatique = ({ automatiqueActive }) => {
-  const [loading, setLoading] = useState(false);
-  const [apiErrorAlertShown, setApiErrorAlertShown] = useState(false);
-
-  useEffect(() => {
-    setLoading(true);
-    fetch('http://192.168.5.34:3000/donnees/humidite')
-      .then(response => response.json())
-      .then(() => {
-        setLoading(false);
-      })
-      .catch(() => {
-        setApiErrorAlertShown(true);
-        setLoading(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    const socket = io('http://192.168.5.34:3000');
-
-    socket.on('automatiqueActive', (data) => {
-      // Gérer le statut automatique actif/inactif ici
-    });
-
-    return () => socket.disconnect();
-  }, []);
-
-  return (
-    <View style={styles.arrosageContainer}>
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>Gestion automatique de l'arrosage</Text>
-      </View>
-
-      <View style={[styles.statusMessageContainer, { backgroundColor: automatiqueActive ? 'rgb(255, 0, 0)' : 'rgb(0, 128, 0)', marginTop: 20 }]}>
-        <Text style={styles.statusMessageText}>
-          {automatiqueActive ? 'Le mode automatique est désactivé' : 'Le mode automatique est activé'}
-        </Text>
-      </View>
-
-      {loading ? (
-        <ActivityIndicator size="large" color="rgb(0, 0, 255)" />
-      ) : (
-        <View />
-      )}
-
-      {apiErrorAlertShown && (
-        <View style={[styles.alertContainer, { bottom: 40 }]}>
-          <Text style={styles.alertText}>Connexion à l'API en attente...</Text>
-        </View>
-      )}
-    </View>
+    </Animated.View>
   );
 };
 
 const SeparatorLine = () => (
   <View style={styles.separator} />
 );
-
-const GestionArrosage = () => {
-  const [automatiqueActive, setAutomatiqueActive] = useState(false);
-  const [manuelActive, setManuelActive] = useState(false);
-
-  const toggleAutomaticMode = (newValue) => {
-    setAutomatiqueActive(newValue);
-    setManuelActive(!newValue);
-  };
-
-  return (
-    <View style={styles.container}>
-      <ArrosageAutomatique automatiqueActive={automatiqueActive} />
-      <SeparatorLine />
-      <ArrosageManuel toggleAutomaticMode={toggleAutomaticMode} />
-    </View>
-  );
-};
 
 const styles = StyleSheet.create({
   container: {
