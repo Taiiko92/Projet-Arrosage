@@ -53,6 +53,11 @@ const Accueil = () => {
     Linking.openURL('https://www.instagram.com/projet_arrosage_snir/');
   };
 
+  // Fonction pour ouvrir la messagerie
+  const openMessage = () => {
+    Linking.openURL('mailto:projet.arrosage.snir@gmail.com');
+  };
+
   // Si l'utilisateur est connecté, afficher le contenu principal
   return (
     <View style={styles.container}>
@@ -64,6 +69,11 @@ const Accueil = () => {
         {/* Bouton pour ouvrir le modal */}
         <TouchableOpacity onPress={openModal} style={styles.openModalButton}>
           <Icon name="bars" size={30} color="black" />
+        </TouchableOpacity>
+
+        {/* Bouton de messagerie */}
+        <TouchableOpacity onPress={openMessage} style={styles.messageButton}>
+          <Icon name="envelope" size={30} color="white" />
         </TouchableOpacity>
 
         {/* Bloc contenant le titre */}
@@ -136,6 +146,12 @@ const styles = StyleSheet.create({
     left: 20,
     zIndex: 1,
   },
+  messageButton: {
+    position: 'absolute',
+    bottom: 15,
+    left: 75,
+    zIndex: 1,
+  },
   titleContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -163,7 +179,7 @@ const styles = StyleSheet.create({
   },
   instagramButton: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 15,
     left: 20,
     zIndex: 1,
   },
@@ -204,7 +220,7 @@ const styles = StyleSheet.create({
   textShadowOffset: { width: 2, height: 2 },
   textShadowRadius: 5,
 },
-
 });
 
 export default Accueil;
+
