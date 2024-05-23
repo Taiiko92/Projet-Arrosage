@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { View, ImageBackground, StyleSheet, Modal, Text, TouchableOpacity, Animated, Linking } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Accueil = () => {
@@ -13,8 +12,11 @@ const Accueil = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const slideAnim = useRef(new Animated.Value(-1000)).current;
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
   useEffect(() => {
     checkLoginStatus();
+    fadeIn();
   }, []);
 
   // Vérifier l'état de connexion en utilisant AsyncStorage
@@ -23,13 +25,22 @@ const Accueil = () => {
     setIsLoggedIn(value === 'true');
   };
 
+  // Animation de fondu à l'ouverture de la page
+  const fadeIn = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  };
+
   // Ouvrir le modal
   const openModal = () => {
     setModalVisible(true);
     Animated.timing(slideAnim, {
       toValue: 0,
       duration: 500,
-      useNativeDriver: false,
+      useNativeDriver: true,
     }).start();
   };
 
@@ -38,7 +49,7 @@ const Accueil = () => {
     Animated.timing(slideAnim, {
       toValue: -1000,
       duration: 350,
-      useNativeDriver: false,
+      useNativeDriver: true,
     }).start(() => setModalVisible(false));
   };
 
@@ -60,7 +71,7 @@ const Accueil = () => {
 
   // Si l'utilisateur est connecté, afficher le contenu principal
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, { opacity: fadeAnim }]}>
       {/* Image de fond */}
       <ImageBackground
         source={require('/home/theo/Théo/ReactNative/ProjetArrosage/assets/images/arrosage.jpg')}
@@ -92,41 +103,36 @@ const Accueil = () => {
 
       {/* Modal pour la navigation */}
       <Modal transparent animationType="none" visible={modalVisible} onRequestClose={closeModal}>
-          <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={closeModal}>
-            <Animated.View
-              style={[
-                styles.modalContainer,
-                {
-                  transform: [
-                    {
-                      translateX: slideAnim,
-                    },
-                  ],
-                },
-              ]}
-            >
-          <View style={styles.modalContent}>
-            {/* Options de navigation dans le modal */}
-            <TouchableOpacity onPress={() => navigateTo('Page2')} style={styles.modalLink}>
-              <Text style={styles.linkText}>Informations et conseils</Text>
-            </TouchableOpacity>
+        <TouchableOpacity style={styles.modalOverlay} activeOpacity={1} onPress={closeModal}>
+          <Animated.View
+            style={[
+              styles.modalContainer,
+              {
+                transform: [{ translateX: slideAnim }],
+              },
+            ]}
+          >
+            <View style={styles.modalContent}>
+              {/* Options de navigation dans le modal */}
+              <TouchableOpacity onPress={() => navigateTo('Page2')} style={styles.modalLink}>
+                <Text style={styles.linkText}>Informations et conseils</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigateTo('Page3')} style={styles.modalLink}>
-              <Text style={styles.linkText}>Données en temps réel</Text>
-            </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigateTo('Page3')} style={styles.modalLink}>
+                <Text style={styles.linkText}>Données en temps réel</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigateTo('Page4')} style={styles.modalLink}>
-              <Text style={styles.linkText}>Gestion de l'arrosage</Text>
-            </TouchableOpacity>
-          </View>
-        </Animated.View>
+              <TouchableOpacity onPress={() => navigateTo('Page4')} style={styles.modalLink}>
+                <Text style={styles.linkText}>Gestion de l'arrosage</Text>
+              </TouchableOpacity>
+            </View>
+          </Animated.View>
         </TouchableOpacity>
-
       </Modal>
 
       {/* Texte en bas de la page */}
       <Text style={styles.footerText}>Réalisé par Théo, Mehdi et Marc</Text>
-    </View>
+    </Animated.View>
   );
 };
 
@@ -209,18 +215,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   footerText: {
-  position: 'absolute',
-  bottom: 10,
-  right: 15,
-  color: 'white',
-  fontSize: 16,
-  fontWeight: 'bold',
-  fontStyle: 'italic',
-  textShadowColor: 'rgba(0, 0, 0, 0.75)',
-  textShadowOffset: { width: 2, height: 2 },
-  textShadowRadius: 5,
-},
+    position: 'absolute',
+    bottom: 10,
+    right: 15,
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+    fontStyle: 'italic',
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 5,
+  },
 });
 
 export default Accueil;
-
