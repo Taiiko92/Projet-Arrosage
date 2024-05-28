@@ -174,7 +174,7 @@ const PrevisionsMeteo = () => {
 
     return (
       <ScrollView horizontal contentContainerStyle={styles.scrollView}>
-        { previsions12ProchainesHeures.map((prevision) => (
+        {previsions12ProchainesHeures.map((prevision) => (
           <View key={prevision.dt} style={styles.itemPrevision}>
             <Text style={styles.date}>
               {new Date(prevision.dt * 1000).toLocaleDateString('fr-FR', { weekday: 'long', day: '2-digit' })}
