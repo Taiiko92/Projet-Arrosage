@@ -33,7 +33,7 @@ const Informations = () => {
   const plantCareData = [
     {
       id: '1',
-      title: 'Choix d\'emplacement ensoleillé',
+      title: 'Choix1 d\'emplacement ensoleillé',
       description: 'Placez votre potager dans un endroit recevant au moins 6 à 8 heures de soleil direct par jour.',
     },
     {
