@@ -174,7 +174,7 @@ const PrevisionsMeteo = () => {
 
     return (
       <ScrollView horizontal contentContainerStyle={styles.scrollView}>
-        {previsions12ProchainesHeures.map((prevision) => (
+        { previsions12ProchainesHeures.map((prevision) => (
           <View key={prevision.dt} style={styles.itemPrevision}>
             <Text style={styles.date}>
               {new Date(prevision.dt * 1000).toLocaleDateString('fr-FR', { weekday: 'long', day: '2-digit' })}
@@ -211,6 +211,9 @@ const PrevisionsMeteo = () => {
         </Text>
         {derniereValeurHum !== null && (
           <View style={styles.progressBarContainer}>
+            {derniereValeurHum < 25 ? (
+              <View style={[styles.progressBarIndicator, { backgroundColor: 'red' }]} />
+            ) : null}
             <ProgressBar progress={(derniereValeurHum / 100)} color={'green'} style={styles.progressBar} />
           </View>
         )}
@@ -221,6 +224,9 @@ const PrevisionsMeteo = () => {
         </Text>
         {derniereValeurCuve !== null && (
           <View style={styles.progressBarContainer}>
+            {derniereValeurCuve < 6 ? (
+              <View style={[styles.progressBarIndicator, { backgroundColor: 'red' }]} />
+            ) : null}
             <ProgressBar progress={(derniereValeurCuve / 833)} color={'blue'} style={styles.progressBar} />
           </View>
         )}
@@ -320,11 +326,20 @@ const styles = StyleSheet.create({
   },
   progressBarContainer: {
     marginTop: 10,
+    position: 'relative',
   },
   progressBar: {
     height: 10,
     borderRadius: 10,
   },
+  progressBarIndicator: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    width: '25%', // Ajustez la largeur selon votre besoin
+  },
 });
 
 export default PrevisionsMeteo;
+
