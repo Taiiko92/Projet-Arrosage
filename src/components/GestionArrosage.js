@@ -142,13 +142,13 @@ const ArrosageManuel = ({ toggleAutomaticMode }) => {
             setMessage("L'arrosage a été arrêté automatiquement");
             stopArrosage();
             setDisableButton(false); // Réactiver le bouton après la fin du minuteur
-            return 1200; // Réinitialiser le minuteur à 1200 secondes
+            return 300; // Réinitialiser le minuteur à 5 minutes
           }
           return prevTempsRestant - 1;
         });
       }, 1000);
-    } else if (tempsRestant !== 1200) {
-      setTempsRestant(1200); // Réinitialiser le minuteur à 1200 secondes
+    } else if (tempsRestant !== 300) {
+      setTempsRestant(300); // Réinitialiser le minuteur à 5 minutes
     }
     setIntervalId(id);
     return () => {
