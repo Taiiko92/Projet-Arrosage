@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Projet arrosage",
-    "slug": "projetarrosage",
+    "slug": "projet-arrosage",
     "version": "1.0.0",
     "platforms": [
       "ios",
