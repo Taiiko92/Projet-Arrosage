@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 // Configuration de la connexion à la base de données
 const db = mysql.createConnection({
  host: 'localhost',
- user: 'phpmyadmin1',
+ user: 'ciel',
  password: 'ciel',
  database: 'Authentification',
  port: 3306,

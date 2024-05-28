@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "ProjetArrosage",
+    "name": "Projet arrosage",
     "slug": "projetarrosage",
     "version": "1.0.0",
     "platforms": [
@@ -16,6 +16,15 @@
     "owner": "theoo92",
     "android": {
       "package": "com.theoo92.projetarrosage"
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/5db9a194-23e0-429a-aa8a-6d0b7411245e"
+    },
+    "ios": {
+      "bundleIdentifier": "com.theoo92.projetarrosage"
     }
   }
 }
