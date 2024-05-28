@@ -7,27 +7,27 @@
       "developmentClient": true,
       "distribution": "internal",
       "android": {
-        "image": "default"
+        "image": "ubuntu-20.04"
       },
       "ios": {
-        "image": "default"
+        "image": "macos-12"
       }
     },
     "preview": {
       "distribution": "internal",
       "android": {
-        "image": "default"
+        "image": "ubuntu-20.04"
       },
       "ios": {
-        "image": "default"
+        "image": "macos-12"
       }
     },
     "production": {
       "android": {
-        "image": "default"
+        "image": "ubuntu-20.04"
       },
       "ios": {
-        "image": "default"
+        "image": "macos-12"
       }
     }
   }

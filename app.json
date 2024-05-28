@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Projet arrosage",
-    "slug": "projetarrosage",
+    "slug": "projetarrosage1",
     "version": "1.0.0",
     "platforms": [
       "ios",
@@ -13,9 +13,9 @@
         "projectId": "5db9a194-23e0-429a-aa8a-6d0b7411245e"
       }
     },
-    "owner": "Taiiko92",
+    "owner": "theoo92",
     "android": {
-      "package": "com.Taiiko92.projetarrosage"
+      "package": "com.theoo92.projetarrosage1"
     },
     "runtimeVersion": {
       "policy": "appVersion"
@@ -24,7 +24,7 @@
       "url": "https://u.expo.dev/5db9a194-23e0-429a-aa8a-6d0b7411245e"
     },
     "ios": {
-      "bundleIdentifier": "com.theoo92.projetarrosage"
+      "bundleIdentifier": "com.theoo92.projetarrosage1"
     }
   }
 }
