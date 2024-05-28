@@ -19,7 +19,7 @@ export default function EcranConnexion() {
             return;
         }
     
-        const url = 'http://localhost:3000/connexion';
+        const url = 'http://192.168.44.54:3000/connexion';
     
         try {
             const response = await fetch(url, {
