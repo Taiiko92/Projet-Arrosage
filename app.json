@@ -15,7 +15,7 @@
     },
     "owner": "theoo92",
     "android": {
-      "package": "com.theoo92.projetarrosage1"
+      "package": "com.theoo92.projet-arrosage1"
     },
     "runtimeVersion": {
       "policy": "appVersion"
