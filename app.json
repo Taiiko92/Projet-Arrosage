@@ -10,7 +10,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "628e8dbc-0f53-4b77-bbef-9e862571db11"
+        "projectId": "fbcecf21-9313-4bdf-9cc6-cbb5c90cb078"
       }
     },
     "owner": "theoo92",
@@ -21,7 +21,7 @@
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/628e8dbc-0f53-4b77-bbef-9e862571db11"
+      "url": "https://u.expo.dev/fbcecf21-9313-4bdf-9cc6-cbb5c90cb078"
     },
     "ios": {
       "bundleIdentifier": "com.theoo92.projetarrosage1"
