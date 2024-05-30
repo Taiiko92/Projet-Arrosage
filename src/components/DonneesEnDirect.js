@@ -11,8 +11,8 @@ const SOCKET_URL = 'http://192.168.5.34:3000';
 
 const PrevisionsMeteo = () => {
   const [donneesMeteo, setDonneesMeteo] = useState(null);
-  const [derniereValeurHum, setDerniereValeurHum] = useState(null);
-  const [derniereValeurCuve, setDerniereValeurCuve] = useState(null);
+  const [derniereValeurHum, setDerniereValeurHum] = useState(20);
+  const [derniereValeurCuve, setDerniereValeurCuve] = useState(86);
   const [socket, setSocket] = useState(null);
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -211,10 +211,8 @@ const PrevisionsMeteo = () => {
         </Text>
         {derniereValeurHum !== null && (
           <View style={styles.progressBarContainer}>
-            {derniereValeurHum < 25 ? (
-              <View style={[styles.progressBarIndicator, { backgroundColor: 'red' }]} />
-            ) : null}
             <ProgressBar progress={(derniereValeurHum / 100)} color={'green'} style={styles.progressBar} />
+            <View style={[styles.indicateurSeuil, { left: `${25}%` }]} />
           </View>
         )}
       </View>
@@ -224,10 +222,8 @@ const PrevisionsMeteo = () => {
         </Text>
         {derniereValeurCuve !== null && (
           <View style={styles.progressBarContainer}>
-            {derniereValeurCuve < 6 ? (
-              <View style={[styles.progressBarIndicator, { backgroundColor: 'red' }]} />
-            ) : null}
             <ProgressBar progress={(derniereValeurCuve / 833)} color={'blue'} style={styles.progressBar} />
+            <View style={[styles.indicateurSeuil, { left: `${(6 / 833) * 100}%` }]} />
           </View>
         )}
       </View>
@@ -327,19 +323,21 @@ const styles = StyleSheet.create({
   progressBarContainer: {
     marginTop: 10,
     position: 'relative',
+    width: '100%',
   },
   progressBar: {
     height: 10,
     borderRadius: 10,
+    zIndex: 1,
   },
-  progressBarIndicator: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    width: '25%', // Ajustez la largeur selon votre besoin
-  },
+  indicateurSeuil: {
+  position: 'absolute',
+  top: 0,
+  bottom: 0,
+  width: 2,
+  backgroundColor: 'red',
+  zIndex: 2,
+},
 });
 
 export default PrevisionsMeteo;
-
