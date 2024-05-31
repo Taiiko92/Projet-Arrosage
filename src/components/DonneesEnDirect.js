@@ -11,8 +11,8 @@ const SOCKET_URL = 'http://192.168.5.34:3000';
 
 const PrevisionsMeteo = () => {
   const [donneesMeteo, setDonneesMeteo] = useState(null);
-  const [derniereValeurHum, setDerniereValeurHum] = useState(20);
-  const [derniereValeurCuve, setDerniereValeurCuve] = useState(86);
+  const [derniereValeurHum, setDerniereValeurHum] = useState(null);
+  const [derniereValeurCuve, setDerniereValeurCuve] = useState(null);
   const [socket, setSocket] = useState(null);
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -131,33 +131,31 @@ const PrevisionsMeteo = () => {
     }
   };
 
-  useEffect(() => {
-    const init = async () => {
-      try {
-        const responseHumidite = await fetch('http://192.168.5.34:3000/donnees/humidite');
-        const dataHumidite = await responseHumidite.json();
-        if (dataHumidite.length > 0) {
-          const humidite = dataHumidite[0].Taux;
-          setDerniereValeurHum(humidite);
-        }
-      } catch (error) {
-        //console.error('Erreur lors de la récupération des données d\'humidité:', error);
-      }
+  const determinerDirectionVent = (degres) => {
+    if (degres >= 0 && degres < 22.5) {
+      return 'N';
+    } else if (degres >= 22.5 && degres < 67.5) {
+      return 'N-E';
+    } else if (degres >= 67.5 && degres < 112.5) {
+      return 'E';
+    } else if (degres >= 112.5 && degres < 157.5) {
+      return 'S-E';
+    } else if (degres >= 157.5 && degres < 202.5) {
+      return 'S';
+    } else if (degres >= 202.5 && degres < 247.5) {
+      return 'S-O';
+    } else if (degres >= 247.5 && degres < 292.5) {
+      return 'O';
+    } else if (degres >= 292.5 && degres < 337.5) {
+      return 'N-O';
+    } else if (degres >= 337.5 && degres <= 360) {
+      return 'N'; // Supérieur à 337.5 degrés, retourne à Nord
+    } else {
+      return 'Inconnue'; // Valeurs en dehors de la plage connue
+    }
+  };
 
-      try {
-        const responseCuve = await fetch('http://192.168.5.34:3000/donnees/niveauEau');
-        const dataCuve = await responseCuve.json();
-        if (dataCuve.length > 0) {
-          const niveauEau = dataCuve[0].Distance;
-          setDerniereValeurCuve(niveauEau);
-        }
-      } catch (error) {
-        //console.error('Erreur lors de la récupération des données de niveau d\'eau:', error);
-      }
-    };
-
-    init();
-  }, []);
+  const convertirEnKmH = (vitesseMs) => Math.round(vitesseMs * 3.6);
 
   const afficherPrevisions = () => {
     if (!donneesMeteo || !donneesMeteo.list) {
@@ -194,6 +192,14 @@ const PrevisionsMeteo = () => {
                 <Text style={styles.quantitePluie}> {prevision.rain ? prevision.rain['3h'] : 0} mm</Text>
               </View>
             </View>
+            <View style={styles.ventContainer}>
+              <Icon name="wind" size={20} color="#000" />
+              <Text style={styles.vitesseVent}>{convertirEnKmH(prevision.wind.speed)} km/h</Text>
+              <View style={styles.directionVent}>
+                <Icon name="compass" size={20} color="#000" style={{ marginRight: 5 }} />
+                <Text>{prevision.wind.deg}° {determinerDirectionVent(prevision.wind.deg)}</Text>
+              </View>
+            </View>
           </View>
         ))}
       </ScrollView>
@@ -212,7 +218,6 @@ const PrevisionsMeteo = () => {
         {derniereValeurHum !== null && (
           <View style={styles.progressBarContainer}>
             <ProgressBar progress={(derniereValeurHum / 100)} color={'green'} style={styles.progressBar} />
-            <View style={[styles.indicateurSeuil, { left: `${25}%` }]} />
           </View>
         )}
       </View>
@@ -223,7 +228,6 @@ const PrevisionsMeteo = () => {
         {derniereValeurCuve !== null && (
           <View style={styles.progressBarContainer}>
             <ProgressBar progress={(derniereValeurCuve / 833)} color={'blue'} style={styles.progressBar} />
-            <View style={[styles.indicateurSeuil, { left: `${(6 / 833) * 100}%` }]} />
           </View>
         )}
       </View>
@@ -256,7 +260,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   itemPrevision: {
-    marginTop: -110,
+    marginTop: -40,
     marginRight: 10,
     padding: 10,
     borderRadius: 8,
@@ -320,24 +324,36 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 5,
   },
+  ventContainer: {
+    marginTop: 10,
+    padding: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    backgroundColor: '#f0f0f0',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  vitesseVent: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginTop: 5,
+  },
+  directionVent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center', // Ajout de la justification centrée horizontalement
+    marginTop: 5,
+},
   progressBarContainer: {
     marginTop: 10,
     position: 'relative',
-    width: '100%',
   },
   progressBar: {
     height: 10,
     borderRadius: 10,
-    zIndex: 1,
   },
-  indicateurSeuil: {
-  position: 'absolute',
-  top: 0,
-  bottom: 0,
-  width: 2,
-  backgroundColor: 'red',
-  zIndex: 2,
-},
 });
 
 export default PrevisionsMeteo;
+

@@ -1,34 +1,21 @@
 {
-  "cli": {
-    "version": ">=0.38.0"
-  },
   "build": {
-    "development": {
-      "developmentClient": true,
-      "distribution": "internal",
-      "android": {
-        "image": "ubuntu-20.04-jdk-11-ndk-r21e"
-      },
-      "ios": {
-        "image": "macos-12"
-      }
-    },
     "preview": {
-      "distribution": "internal",
       "android": {
-        "image": "ubuntu-20.04-jdk-11-ndk-r21e"
-      },
-      "ios": {
-        "image": "macos-12"
+        "buildType": "apk"
       }
     },
-    "production": {
+    "preview2": {
       "android": {
-        "image": "ubuntu-20.04-jdk-11-ndk-r21e"
-      },
-      "ios": {
-        "image": "macos-12"
+        "gradleCommand": ":app:assembleRelease"
       }
-    }
+    },
+    "preview3": {
+      "developmentClient": true
+    },
+    "preview4": {
+      "distribution": "internal"
+    },
+    "production": {}
   }
 }
