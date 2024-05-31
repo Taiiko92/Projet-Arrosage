@@ -131,6 +131,34 @@ const PrevisionsMeteo = () => {
     }
   };
 
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const responseHumidite = await fetch('http://192.168.5.34:3000/donnees/humidite');
+        const dataHumidite = await responseHumidite.json();
+        if (dataHumidite.length > 0) {
+          const humidite = dataHumidite[0].Taux;
+          setDerniereValeurHum(humidite);
+        }
+      } catch (error) {
+        //console.error('Erreur lors de la récupération des données d\'humidité:', error);
+      }
+
+      try {
+        const responseCuve = await fetch('http://192.168.5.34:3000/donnees/niveauEau');
+        const dataCuve = await responseCuve.json();
+        if (dataCuve.length > 0) {
+          const niveauEau = dataCuve[0].Distance;
+          setDerniereValeurCuve(niveauEau);
+        }
+      } catch (error) {
+        //console.error('Erreur lors de la récupération des données de niveau d\'eau:', error);
+      }
+    };
+
+    init();
+  }, []);
+
   const determinerDirectionVent = (degres) => {
     if (degres >= 0 && degres < 22.5) {
       return 'N';
@@ -156,6 +184,7 @@ const PrevisionsMeteo = () => {
   };
 
   const convertirEnKmH = (vitesseMs) => Math.round(vitesseMs * 3.6);
+
 
   const afficherPrevisions = () => {
     if (!donneesMeteo || !donneesMeteo.list) {
