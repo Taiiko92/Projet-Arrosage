@@ -149,9 +149,9 @@ const PrevisionsMeteo = () => {
     } else if (degres >= 292.5 && degres < 337.5) {
       return 'N-O';
     } else if (degres >= 337.5 && degres <= 360) {
-      return 'N'; // Supérieur à 337.5 degrés, retourne à Nord
+      return 'N';
     } else {
-      return 'Inconnue'; // Valeurs en dehors de la plage connue
+      return 'Inconnue';
     }
   };
 
